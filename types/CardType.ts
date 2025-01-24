@@ -1,4 +1,4 @@
-export interface CardType {
+export default interface CardType {
     id:                    number;
     name:                  string;
     typeline:              string[];

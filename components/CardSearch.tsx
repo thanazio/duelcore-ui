@@ -5,9 +5,9 @@ import { useState, useEffect, ChangeEvent } from "react";
 
 import useBoolean from "@/hooks/useBoolean";
 import useDebounce from "@/hooks/useDebounce";
-import { CardType } from "@/types/CardType";
-import CardData from "@/components/CardData";
+import CardType from "@/types/CardType";
 
+import { Tooltip, TooltipTrigger, TooltipContent } from "./Tooltip";
 
 const acrobaticMagician = {
     "id": 33656832,
@@ -62,9 +62,9 @@ const acrobaticMagician = {
 
 export default function CardSearch() {
     const [searchValue, setSearchValue] = useState('');
-    const [hoveredCard, setHoveredCard] = useState<CardType | null>(acrobaticMagician);
     const debouncedSearchValue = useDebounce(searchValue);
-    const [searchResults, setSearchResults] = useState<CardType[]>([]);
+    const [searchResults, setSearchResults] = useState<CardType[]>([acrobaticMagician]);
+    const [displayedCardsOffset, setDisplayedCardsOffset] = useState<number>(0);
     const {
         bool: isLoading,
         boolToTrue,
@@ -72,7 +72,6 @@ export default function CardSearch() {
     } = useBoolean(true);
     const {
         bool: hoveredCardFlag,
-        boolToFalse: hideHoveredCard,
         boolToTrue: showHoveredCard
     } = useBoolean(true);
 
@@ -98,37 +97,35 @@ export default function CardSearch() {
         }
     };
 
-    const handleShowCardData = (card: CardType) => {
-        showHoveredCard();
-        setHoveredCard(card);
+    const displayPopup = (card: CardType) => {
+
     };
 
-    const handleHideCardData = () => {
-        hideHoveredCard();
-        setHoveredCard(null);
-    }
-
     return (
-        <div className="flex justify-center gap-2 max-h-screen mx-auto">
-            <div className="flex items-center flex-col w-1/3 overflow-x-auto overflow-y-scroll bg-red-400">
-                <input type="text" className="text-black" value={searchValue} onChange={handleSearchValue} placeholder="Search for a card" />
-                {isLoading && searchResults.length === 0 && <h1>Now Loading</h1>}
-                <div className="grid grid-cols-5 gap-1">
-                    {searchResults.length > 0 && searchResults.map((card) =>
-                        <div
-                            key={card.id}
-                            className="border-slate-400 border-2"
-                            onMouseEnter={() => handleShowCardData(card)}
-                            onMouseLeave={() => handleHideCardData()}
-                        >
-                            <Image src={card.card_images[0].image_url_small} width={268} height={392} alt={card.name} />
+        <div className="flex flex-col items-center">
+            <input type="text" className="text-black" value={searchValue} onChange={handleSearchValue} placeholder="Search for a card" />
+            <div className="flex items-center flex-col border-cyan-300 border-2 w-[500px] max-h-96 bg-slate-900 overflow-x-auto overflow-y-scroll">
+                {searchResults?.length === 0 && <h1>No Cards Found</h1>}
+                <div className="grid grid-cols-5 gap-1 z-1">
+                    {searchResults?.length > 0 && searchResults.map((card) =>
+                        <div key={card.id}>
+                            <Tooltip>
+                                <TooltipTrigger>
+                                    <div key={card.id}>
+                                        <Image src={card.card_images[0].image_url_small} width={268} height={392} alt={card.name} />
+                                    </div>
+                                </TooltipTrigger>
+                                <TooltipContent className="Tooltip">
+                                    <div>
+                                        {card.desc}
+                                    </div>
+                                </TooltipContent>
+                            </Tooltip>
                         </div>
                     )}
                 </div>
             </div>
-            <div className=" w-1/3 bg-blue-400">
-                {hoveredCard && hoveredCardFlag && <CardData card={hoveredCard} />}
-            </div>
+            {searchResults.length > 0 && <h3>You have {searchResults.length} results</h3>}
         </div>
     );
 }

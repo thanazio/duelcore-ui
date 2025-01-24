@@ -1,8 +1,8 @@
-import { CardType } from "@/types/CardType";
+import CardType from "@/types/CardType";
 import Image from "next/image";
 
 
-export default function CardData({ card }: { card: CardType}) {
+export default function DisplayCardData({ card }: { card: CardType}) {
     if (!card) {
         return <p>Select a card</p>
     }
@@ -14,8 +14,6 @@ export default function CardData({ card }: { card: CardType}) {
         amazon_price,
         coolstuffinc_price
     } = card.card_prices[0];
-
-    console.log(card);
 
     return (
         <div className="p-2 flex flex-col justify-center items-center">
