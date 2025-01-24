@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/images/**',
         search: '',
-      },
+      }
     ],
   },
 };

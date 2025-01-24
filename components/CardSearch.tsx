@@ -8,6 +8,7 @@ import useDebounce from "@/hooks/useDebounce";
 import CardType from "@/types/CardType";
 
 import { Tooltip, TooltipTrigger, TooltipContent } from "./Tooltip";
+import DisplayCardData from "./DisplayCardData";
 
 const acrobaticMagician = {
     "id": 33656832,
@@ -97,10 +98,6 @@ export default function CardSearch() {
         }
     };
 
-    const displayPopup = (card: CardType) => {
-
-    };
-
     return (
         <div className="flex flex-col items-center">
             <input type="text" className="text-black" value={searchValue} onChange={handleSearchValue} placeholder="Search for a card" />
@@ -108,20 +105,16 @@ export default function CardSearch() {
                 {searchResults?.length === 0 && <h1>No Cards Found</h1>}
                 <div className="grid grid-cols-5 gap-1 z-1">
                     {searchResults?.length > 0 && searchResults.map((card) =>
-                        <div key={card.id}>
-                            <Tooltip>
-                                <TooltipTrigger>
-                                    <div key={card.id}>
-                                        <Image src={card.card_images[0].image_url_small} width={268} height={392} alt={card.name} />
-                                    </div>
-                                </TooltipTrigger>
-                                <TooltipContent className="Tooltip">
-                                    <div>
-                                        {card.desc}
-                                    </div>
-                                </TooltipContent>
-                            </Tooltip>
-                        </div>
+                        <Tooltip placement="right" key={card.id}>
+                            <TooltipTrigger>
+                                <div key={card.id}>
+                                    <Image src={card.card_images[0].image_url_small} width={268} height={391} alt={card.name} />
+                                </div>
+                            </TooltipTrigger>
+                            <TooltipContent className="Tooltip">
+                                <DisplayCardData card={card} />
+                            </TooltipContent>
+                        </Tooltip>
                     )}
                 </div>
             </div>
