@@ -90,8 +90,6 @@ export function Tooltip({
   children,
   ...options
 }: { children: React.ReactNode } & TooltipOptions) {
-  // This can accept any props as options, e.g. `placement`,
-  // or other positioning options.
   const tooltip = useTooltip(options);
   return (
     <TooltipContext.Provider value={tooltip}>
@@ -108,7 +106,6 @@ export const TooltipTrigger = React.forwardRef<
   const childrenRef = (children as any).ref;
   const ref = useMergeRefs([context.refs.setReference, propRef, childrenRef]);
 
-  // `asChild` allows the user to pass any element as the anchor
   if (asChild && React.isValidElement(children)) {
     return React.cloneElement(
       children,
@@ -124,7 +121,6 @@ export const TooltipTrigger = React.forwardRef<
   return (
     <button
       ref={ref}
-      // The user can style the trigger based on the state
       data-state={context.open ? "open" : "closed"}
       {...context.getReferenceProps(props)}
     >

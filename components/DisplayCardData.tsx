@@ -24,27 +24,29 @@ export default function DisplayCardData({ card }: { card: CardType }) {
                 <div>
                     <div className="flex justify-between">
                         <span>{card.name}</span>
+                        <span>{card.type}</span>
                         <div className="flex justify-end gap-2">
                             <span>
-                                <Image
+                                {card.attribute && <span><Image
                                     src={`https://images.ygoprodeck.com/images/cards/${card?.attribute}.jpg`}
                                     width={20}
                                     height={20}
                                     alt={card?.attribute}
                                     className="inline"
                                 />
-                                {card?.attribute}
+                                    {card?.attribute}</span>}
                             </span>
                             <span>
-                            <Image
-                                    src={monsterLevel}
-                                    width={20}
-                                    height={20}
-                                    alt={card?.level.toString()}
-                                    className="inline"
-                                />
-                            
-                                {card.level}
+                                {card.level && <span>
+                                    <Image
+                                        src={monsterLevel}
+                                        width={20}
+                                        height={20}
+                                        alt={card?.level.toString()}
+                                        className="inline"
+                                    />
+                                    {card.level}
+                                </span>}
                             </span>
                         </div>
                     </div>
